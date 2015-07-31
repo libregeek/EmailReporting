@@ -721,6 +721,13 @@ class ERP_mailbox_api
 		{
 			$t_reporter_id = user_get_id_by_email( $p_email_address );
 		}
+		
+		//ejyothi - fetch user id from multiemail plugin table
+		if( !$t_reporter_id )
+		{
+			$query = 'SELECT user_id FROM ' . plugin_table( 'emails', 'MultiEmail' ) . ' WHERE email=' . db_param();
+			$t_reporter_id = db_result( db_query_bound( $query, array( $p_email_address ), 1 ) );
+		}
 
 		return( $t_reporter_id );
 	}
